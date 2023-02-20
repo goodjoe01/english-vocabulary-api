@@ -1,0 +1,52 @@
+{
+  "name": "stonks-reborn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "dotenv -e .env.dev ts-node-dev src --respawn src/index.ts",
+    "start": "dotenv -e .env.dev ts-node-dev src --respawn src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma-dev": "dotenv -e .env.dev -- npx prisma migrate dev && npx prisma generate",
+    "pull": "dotenv -e .env.dev -- npx prisma db pull"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goodjoe01/stonks-reborn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goodjoe01/stonks-reborn/issues"
+  },
+  "homepage": "https://github.com/goodjoe01/stonks-reborn#readme",
+  "dependencies": {
+    "@prisma/client": "^4.9.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/morgan": "^1.9.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^5.0.0-beta.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "eslint": "^8.20.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^2.0.19",
+    "prisma": "^4.9.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.7.4"
+  }
+}
