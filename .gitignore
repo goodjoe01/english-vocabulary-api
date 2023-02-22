@@ -45,4 +45,3 @@ prisma/migrations/*
 
 .vscode/
 
-src/.env.dev
