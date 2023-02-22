@@ -1,36 +1,23 @@
-FROM debian:bullseye as builder
+# Establece la imagen base
+FROM node:18.12-alpine
 
-ARG NODE_VERSION=18.12.1
-
-RUN apt-get update; apt install -y curl python-is-python3 pkg-config build-essential
-RUN curl https://get.volta.sh | bash
-ENV VOLTA_HOME /root/.volta
-ENV PATH /root/.volta/bin:$PATH
-RUN volta install node@${NODE_VERSION}
-
-#######################################################################
-
-RUN mkdir /app
+# Crea un directorio de trabajo
 WORKDIR /app
 
-# NPM will not install any package listed in "devDependencies" when NODE_ENV is set to "production",
-# to install all modules: "npm install --production=false".
-# Ref: https://docs.npmjs.com/cli/v9/commands/npm-install#description
+# Copia el archivo package.json y package-lock.json
+COPY package*.json ./
 
-ENV NODE_ENV production
+# Instala las dependencias
+RUN npm install --only=production
 
+# Copia el resto de los archivos
 COPY . .
 
-RUN npm install
-FROM debian:bullseye
+# Compila el código TypeScript en JavaScript
+RUN npm run build
 
-LABEL fly_launch_runtime="nodejs"
+# Exponer el puerto en el que se ejecuta la aplicación
+EXPOSE 3000
 
-COPY --from=builder /root/.volta /root/.volta
-COPY --from=builder /app /app
-
-WORKDIR /app
-ENV NODE_ENV production
-ENV PATH /root/.volta/bin:$PATH
-
-CMD [ "npm", "run", "start" ]
+# Iniciar la aplicación
+CMD [ "node", "./dist/index.js" ]
