@@ -1,4 +1,4 @@
-FROM node:18.12.1-alpine
+FROM node:18.12.1-alpine as builder
 WORKDIR /usr
 COPY package.json ./
 COPY tsconfig.json ./
@@ -12,6 +12,6 @@ FROM node:18.12.1-alpine
 WORKDIR /usr
 COPY package.json ./
 RUN npm install --only=production
-COPY --from=0 /usr/dist .
+COPY --from=builder /usr/dist ./dist
 EXPOSE 80
 CMD ["npm","start"]
