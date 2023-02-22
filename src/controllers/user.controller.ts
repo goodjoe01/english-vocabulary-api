@@ -20,7 +20,6 @@ export const postUser = async (req: Request, res: Response) => {
     const user = await createUser(userBody)
     return res.status(200).json(user)
   } catch (error) {
-    console.log(error)
     if (error instanceof Error) {
       return res.status(500).json({ error: error.message })
     }
@@ -37,14 +36,6 @@ export const getUsers = async (req: Request, res: Response) => {
     }
   }
 }
-
-/* export const getUsers = (req: Request, res: Response) =>{
-    getAllUsers()
-    .then(user=>{
-      throw new Error('error');
-      res.status(200).json(user);})
-    .catch(err=>{res.status(500).json({message: err})});
-} */
 
 export const getUser = async (req: Request, res: Response) => {
   try {

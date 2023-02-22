@@ -23,7 +23,6 @@ export const getOneCollection = async (CollectionId: string): Promise<Collection
 }
 
 export const createNewCollection = async (newCollection: Prisma.CollectionCreateInput, userId: string): Promise<Collection> => {
-  console.log('USER ID', userId)
   const data = await prisma.collection.create({
     data: {
       ...newCollection,

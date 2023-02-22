@@ -66,7 +66,6 @@ export const createUser = async (user: Prisma.UserCreateInput) => {
 
     return newUser;
   } catch (error) {
-    console.log(error)
     if (error instanceof Error) {
       return console.log('Error in service' + error.message)
     }

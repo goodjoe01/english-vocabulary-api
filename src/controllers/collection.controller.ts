@@ -31,7 +31,6 @@ export const getcollection = async (req: AuthRequest, res: Response) => {
 
 export const postNewcollection = async (req: AuthRequest, res: Response) => {
   const userId = req.userId
-  console.log('service id: ', req.userId)
   const newcollection: Prisma.CollectionCreateInput = req.body
   const createdcollection = await createNewCollection(newcollection, userId as string)
 

@@ -8,13 +8,9 @@ const TOKEN_KEY = process.env.TOKEN_KEY
 export const AuthHandler = (req: AuthRequest, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization
 
-  console.log(auth)
-
   if (!auth) throw new HttpError('Authorization not found', 401)
 
   const token = auth.substring(7)
-
-  console.log(token)
 
   jwt.verify(token, TOKEN_KEY as string, (err: VerifyErrors | null, decoded) => {
     if (err) throw new HttpError(`${err.name}: ${err.message}`, 401)
