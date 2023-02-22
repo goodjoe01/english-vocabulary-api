@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "dotenv -e .env.dev ts-node-dev src --respawn src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma-dev": "dotenv -e .env.dev -- npx prisma migrate dev && npx prisma generate",
     "pull": "dotenv -e .env.dev -- npx prisma db pull"
