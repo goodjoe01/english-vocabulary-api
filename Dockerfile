@@ -3,6 +3,7 @@ WORKDIR /usr
 COPY package.json ./
 COPY tsconfig.json ./
 COPY src ./src
+COPY prisma ./prisma
 RUN ls -a
 RUN npm install
 RUN npm run build
