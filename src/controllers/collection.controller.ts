@@ -7,7 +7,8 @@ import {
   getAllCollections,
   getOneCollection,
   haveAuthorizationOnCollection,
-  updateCollectionById
+  updateCollectionById,
+  getLastCollections
 } from '../services/collection.service'
 import { AuthorizationHttpError } from '../types/error'
 
@@ -15,6 +16,15 @@ export const getcollections = async (req : AuthRequest, res: Response, next: Nex
   const userId = req.userId
 
   const collections = await getAllCollections(userId as string)
+
+  res.status(200).send(collections)
+}
+
+export const getLastNCollections = async (req : AuthRequest, res: Response, next: NextFunction) => {
+  const userId = req.userId
+  const limit = Number(req.params.limit)
+
+  const collections = await getLastCollections(userId as string, limit)
 
   res.status(200).send(collections)
 }

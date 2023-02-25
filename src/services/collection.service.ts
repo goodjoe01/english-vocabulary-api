@@ -12,6 +12,20 @@ export const getAllCollections = async (userId: string): Promise<Array<Collectio
   return data
 }
 
+export const getLastCollections = async (userId: string, n: number): Promise<Array<Collection>> => {
+  const data = await prisma.collection.findMany({
+    where: {
+      userId
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: n
+  })
+
+  return data
+}
+
 export const getOneCollection = async (CollectionId: string): Promise<Collection> => {
   const data = await prisma.collection.findUniqueOrThrow({
     where: {

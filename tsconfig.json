@@ -10,8 +10,8 @@
     "skipLibCheck": true,
     "declaration": true                
   },
-  "ts-node": {
+/*   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node" 
-  }
+  } */
 }
