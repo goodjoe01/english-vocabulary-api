@@ -8,19 +8,33 @@ import prisma from '../lib/prisma'
 const TOKEN_KEY = process.env.TOKEN_KEY
 
 const createToken = async (user: Prisma.UserCreateInput) => {
-  const { email, id, firstName } = user
+  const { email, id, firstName, githubId } = user
 
-  const token = jwt.sign(
-    { userId: id, email, firstName },
-    TOKEN_KEY as string,
-    { expiresIn: '1d' }
-  )
-  return token
+  if (user.type === 'githubUser') {
+    const token = jwt.sign(
+      { userId: id, firstName, githubId },
+      TOKEN_KEY as string,
+      { expiresIn: '7d' }
+    )
+    return token
+  } else {
+    const token = jwt.sign(
+      { userId: id, email, firstName },
+      TOKEN_KEY as string,
+      { expiresIn: '7d' }
+    )
+    return token
+  }
 }
 
-export const login = async (email: string, password: string) => {
+export const login = async (password: string, email?: string, githubId?: string, type?: string) => {
   try {
-    const user = await prisma.user.findUniqueOrThrow({ where: { email } })
+    let user;
+    if (type === 'githubUser') {
+      user = await prisma.user.findUniqueOrThrow({ where: { githubId } })
+    } else {
+      user = await prisma.user.findUniqueOrThrow({ where: { email } })
+    }
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const newToken = await createToken(user)
@@ -58,7 +72,9 @@ export const createUser = async (user: Prisma.UserCreateInput) => {
         email: user.email,
         password: encryptedPassword,
         firstName: user.firstName,
-        lastName: user.lastName
+        lastName: user.lastName,
+        type: user.type,
+        githubId: user.githubId
       }
     });
     const jsonWT = await createToken(newUser)
@@ -104,6 +120,29 @@ export const getOneUser = async (userId: string) => {
         lastName: true,
         email: true,
         collections: true
+      }
+    })
+    return user
+  } catch (error) {
+    if (error instanceof Error) {
+      return console.log('Error in service' + error.message)
+    }
+  }
+}
+
+export const getUserByGitId = async (githubId: string) => {
+  try {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        githubId
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        collections: true,
+        githubId: true
       }
     })
     return user
