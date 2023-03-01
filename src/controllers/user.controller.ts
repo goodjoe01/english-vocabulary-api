@@ -4,8 +4,8 @@ import { Request, Response } from 'express'
 
 export const signUp = async (req: Request, res: Response) => {
   try {
-    const { email, password, gitId } = req.body
-    const loggedUser = await login(password, email, gitId)
+    const { email, password, githubId, type } = req.body
+    const loggedUser = await login(password, email, githubId, type)
     res.status(200).json(loggedUser)
   } catch (error) {
     if (error instanceof Error) {

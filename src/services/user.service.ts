@@ -49,7 +49,9 @@ export const login = async (password: string, email?: string, githubId?: string,
           id: true,
           firstName: true,
           email: true,
-          token: true
+          token: true,
+          type: true,
+          githubId: true
         }
       })
       return signUp
