@@ -1,4 +1,4 @@
-import { PrismaClientUnknownRequestError } from '@prisma/client/runtime/binary'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express'
 import { HttpError, NotFoundHttpError } from '../types/error'
 
@@ -9,7 +9,7 @@ export const ErrorHandler: ErrorRequestHandler = (err: HttpError | unknown, req:
     customError = new HttpError('Something went wrong! :c')
   }
 
-  if (err instanceof PrismaClientUnknownRequestError) {
+  if (err instanceof PrismaClientKnownRequestError) {
     customError = new NotFoundHttpError()
   }
 
