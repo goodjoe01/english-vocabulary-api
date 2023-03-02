@@ -1,4 +1,4 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express'
 import { HttpError, NotFoundHttpError } from '../types/error'
 

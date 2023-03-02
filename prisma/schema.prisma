@@ -30,4 +30,3 @@ model Collection {
   userId    String    @db.VarChar(255)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-
