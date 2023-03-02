@@ -29,7 +29,7 @@ export const getLastNCollections = async (req : AuthRequest, res: Response, next
   res.status(200).send(collections)
 }
 
-export const getcollection = async (req: AuthRequest, res: Response) => {
+export const getcollection = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const userId = req.userId
   const collectionId = req.params.id
   const collection = await getOneCollection(collectionId)
@@ -47,25 +47,32 @@ export const postNewcollection = async (req: AuthRequest, res: Response) => {
   res.status(201).send(createdcollection)
 }
 
-export const putcollection = async (req: AuthRequest, res: Response) => {
-  const userId = req.userId
-  const collectionId: string = req.params.id
+export const putcollection = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.userId
+    const collectionId: string = req.params.id
+    const auth = await haveAuthorizationOnCollection(collectionId, userId as string)
+    if (!auth) throw new AuthorizationHttpError()
 
-  if (!haveAuthorizationOnCollection(collectionId, userId as string)) throw new AuthorizationHttpError()
-
-  const updatecollection: Prisma.CollectionUpdateInput = req.body
-  const updatedcollection = await updateCollectionById(updatecollection, collectionId)
-
-  res.status(200).send(updatedcollection)
+    const updatecollection: Prisma.CollectionUpdateInput = req.body
+    const updatedcollection = await updateCollectionById(updatecollection, collectionId)
+    res.status(200).send(updatedcollection)
+  } catch (error) {
+    next(error)
+  }
 }
 
-export const deletecollection = async (req: AuthRequest, res: Response) => {
-  const userId = req.userId
-  const collectionId: string = req.params.id
+export const deletecollection = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.userId
+    const collectionId: string = req.params.id
+    const auth = await haveAuthorizationOnCollection(collectionId, userId as string)
+    if (!auth) throw new AuthorizationHttpError()
 
-  if (!haveAuthorizationOnCollection(collectionId, userId as string)) throw new AuthorizationHttpError()
+    const deletedcollection = await deleteCollectionById(collectionId)
 
-  const deletedcollection = await deleteCollectionById(collectionId)
-
-  res.status(200).send(deletedcollection)
+    res.status(200).send(deletedcollection)
+  } catch (error) {
+    next(error)
+  }
 }

@@ -67,11 +67,12 @@ export const deleteCollectionById = async (CollectionId: string): Promise<Collec
     }
   })
 
+  console.log('data:', data)
   return data
 }
 
 export const haveAuthorizationOnCollection = async (CollectionId:string, userId: string): Promise<boolean> => {
-  const dbUserId = await prisma.collection.findUniqueOrThrow({
+  const dbCollection = await prisma.collection.findUniqueOrThrow({
     where: {
       id: CollectionId
     },
@@ -79,6 +80,7 @@ export const haveAuthorizationOnCollection = async (CollectionId:string, userId:
       userId: true
     }
   })
-  if (userId !== dbUserId.userId) return false
+  console.log({ dbCollection, userId })
+  if (userId !== dbCollection.userId) return false
   return true
 }
