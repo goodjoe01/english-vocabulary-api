@@ -56,7 +56,7 @@ export const login = async (password: string, email?: string, githubId?: string,
       })
       return signUp
     } else {
-      return console.log('Incorrect credentials')
+      return { message: 'Incorrect credentials' }
     }
   } catch (error) {
     if (error instanceof Error) {
