@@ -157,6 +157,8 @@ export const getUserByGitId = async (githubId: string) => {
 
 export const updateUser = async (userId: string, user: Prisma.UserCreateInput) => {
   try {
+    const encryptedPassword = await bcrypt.hash(user.password, 10)
+    user.password = encryptedPassword;
     const userUpdated = await prisma.user.update({
       data: user,
       where: {
