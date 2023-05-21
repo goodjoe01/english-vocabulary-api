@@ -6,7 +6,12 @@ export const getAllCollections = async (userId: string): Promise<Array<Collectio
   const data = await prisma.collection.findMany({
     where: {
       userId
-    }
+    },
+    orderBy: [
+      {
+        createdAt: 'desc'
+      }
+    ]
   })
 
   return data
