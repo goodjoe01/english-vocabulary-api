@@ -5,6 +5,7 @@ import {
   createNewCollection,
   deleteCollectionById,
   getAllCollections,
+  findCollectionByName,
   getOneCollection,
   haveAuthorizationOnCollection,
   updateCollectionById,
@@ -14,8 +15,18 @@ import { AuthorizationHttpError } from '../types/error'
 
 export const getcollections = async (req : AuthRequest, res: Response, next: NextFunction) => {
   const userId = req.userId
+  const collectionName = req.params.name
 
-  const collections = await getAllCollections(userId as string)
+  const collections = await getAllCollections(userId as string, collectionName)
+
+  res.status(200).send(collections)
+}
+
+export const findcollectionsByName = async (req : AuthRequest, res: Response, next: NextFunction) => {
+  const userId = req.userId
+  const collectionName = req.params.name
+  console.log('colName: ', collectionName)
+  const collections = await findCollectionByName(collectionName ,userId as string)
 
   res.status(200).send(collections)
 }
@@ -51,6 +62,7 @@ export const putcollection = async (req: AuthRequest, res: Response, next: NextF
   try {
     const userId = req.userId
     const collectionId: string = req.params.id
+    console.log('colid: ', collectionId)
     const auth = await haveAuthorizationOnCollection(collectionId, userId as string)
     if (!auth) throw new AuthorizationHttpError()
 

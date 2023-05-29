@@ -2,11 +2,19 @@ import { Collection, Prisma } from '@prisma/client'
 
 import prisma from '../lib/prisma'
 
-export const getAllCollections = async (userId: string): Promise<Array<Collection>> => {
+export const getAllCollections = async (userId: string, colName?: string): Promise<Array<Collection>> => {
+  const whereClause: any = {
+    userId,
+  }
+
+  if (colName) {
+    whereClause.name = {
+      mode: 'insensitive',
+      contains: colName
+    };
+  }
   const data = await prisma.collection.findMany({
-    where: {
-      userId
-    },
+    where: whereClause,
     orderBy: [
       {
         createdAt: 'desc'
@@ -27,6 +35,7 @@ export const getLastCollections = async (userId: string, n: number): Promise<Arr
     },
     take: n
   })
+
 
   return data
 }
@@ -72,11 +81,25 @@ export const deleteCollectionById = async (CollectionId: string): Promise<Collec
     }
   })
 
-  console.log('data:', data)
   return data
 }
 
-export const haveAuthorizationOnCollection = async (CollectionId:string, userId: string): Promise<boolean> => {
+export const findCollectionByName = async (collectionName: string, userId: string): Promise<Collection[]> => {
+
+  const data = await prisma.collection.findMany({
+    where: {
+      name: {
+        mode: 'insensitive',
+        contains: collectionName
+      },
+      userId,
+    }
+  });
+
+  return data;
+}
+
+export const haveAuthorizationOnCollection = async (CollectionId: string, userId: string): Promise<boolean> => {
   const dbCollection = await prisma.collection.findUniqueOrThrow({
     where: {
       id: CollectionId
@@ -85,7 +108,6 @@ export const haveAuthorizationOnCollection = async (CollectionId:string, userId:
       userId: true
     }
   })
-  console.log({ dbCollection, userId })
   if (userId !== dbCollection.userId) return false
   return true
 }
