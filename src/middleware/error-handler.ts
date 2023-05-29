@@ -4,7 +4,6 @@ import { HttpError, NotFoundHttpError } from '../types/error'
 
 export const ErrorHandler: ErrorRequestHandler = (err: HttpError | unknown, req: Request, res: Response, next: NextFunction) => {
   let customError = err
-  console.log('error: ', customError)
 
   if (!(err instanceof HttpError)) {
     customError = new HttpError('Something went wrong! :c')

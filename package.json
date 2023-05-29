@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "dotenv -e .env.dev ts-node-dev src --respawn src/index.ts",
+    "dev": "ts-node-dev src --respawn src/index.ts",
+    "dev1": "dotenv -e .env.dev ts-node-dev src --respawn src/index.ts",
     "build": "npx prisma generate && tsc",
     "prisma": "npx prisma generate",
     "start": "node dist/index.js",

@@ -14,14 +14,14 @@ const createToken = async (user: Prisma.UserCreateInput) => {
     const token = jwt.sign(
       { userId: id, firstName, githubId },
       TOKEN_KEY as string,
-      { expiresIn: '7d' }
+      { expiresIn: '30d' }
     )
     return token
   } else {
     const token = jwt.sign(
       { userId: id, email, firstName },
       TOKEN_KEY as string,
-      { expiresIn: '7d' }
+      { expiresIn: '30d' }
     )
     return token
   }
